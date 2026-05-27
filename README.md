@@ -34,3 +34,38 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Environment variables
+
+This project uses NextAuth with Google OAuth. Create a `.env.local` file at the project root with the variables below (you can copy `.env.example`):
+
+Required variables:
+
+- `GOOGLE_CLIENT_ID` — Google OAuth client ID
+- `GOOGLE_CLIENT_SECRET` — Google OAuth client secret
+- `NEXTAUTH_URL` — e.g. `http://localhost:3000`
+- `NEXTAUTH_SECRET` — a long, random secret used by NextAuth
+
+Steps to configure locally:
+
+1. Copy the example file:
+
+```bash
+cp .env.example .env.local
+```
+
+2. Fill the values in `.env.local` with your Google credentials and a generated `NEXTAUTH_SECRET`.
+
+3. Restart the dev server:
+
+```bash
+npm run dev
+```
+
+4. Open `http://localhost:3000` and click `Entrar` to start the Google sign-in flow.
+
+Notes:
+
+- Do not commit `.env.local` to your repository. Keep secrets out of version control.
+- If you deploy to Vercel, set the same environment variables in the project settings.
+
