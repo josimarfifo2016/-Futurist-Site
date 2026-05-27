@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 import { motion } from "framer-motion";
 
@@ -62,12 +63,13 @@ export default function Navbar() {
 
           {/* CTA */}
 
-          <Link
-            href="/dashboard"
+          <button
+            type="button"
+            onClick={() => signIn("google")}
             className="px-6 py-3 rounded-2xl bg-linear-to-r from-cyan-500 to-purple-600 hover:scale-105 transition font-bold shadow-[0_0_30px_rgba(6,182,212,0.4)]"
           >
             Entrar
-          </Link>
+          </button>
 
         </div>
 
