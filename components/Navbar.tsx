@@ -52,12 +52,12 @@ export default function Navbar() {
               IA
             </Link>
 
-            <a
-              href="#"
+            <Link
+              href="/dashboard"
               className="hover:text-cyan-400 transition"
             >
               Analytics
-            </a>
+            </Link>
 
           </nav>
 

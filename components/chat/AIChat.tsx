@@ -94,13 +94,21 @@ export default function AIChat() {
           onChange={(e) =>
             setInput(e.target.value)
           }
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              sendMessage();
+            }
+          }}
           placeholder="Pergunte algo..."
           className="flex-1 bg-black/30 border border-white/10 rounded-2xl px-4 py-3"
         />
 
         <button
+          type="button"
           onClick={sendMessage}
-          className="px-6 py-3 rounded-2xl bg-linear-to-r from-cyan-500 to-purple-600"
+          disabled={!input || loading}
+          className="px-6 py-3 rounded-2xl bg-linear-to-r from-cyan-500 to-purple-600 disabled:opacity-50"
         >
           Enviar
         </button>
