@@ -68,4 +68,3 @@ Notes:
 
 - Do not commit `.env.local` to your repository. Keep secrets out of version control.
 - If you deploy to Vercel, set the same environment variables in the project settings.
-

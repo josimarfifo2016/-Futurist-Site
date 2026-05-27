@@ -1,11 +1,13 @@
-"use client";
+use client;
 
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 import { motion } from "framer-motion";
 
 export default function Navbar() {
+  const { data: session } = useSession();
+
   return (
     <motion.header
       initial={{ y: -80, opacity: 0 }}
@@ -63,13 +65,37 @@ export default function Navbar() {
 
           {/* CTA */}
 
-          <button
-            type="button"
-            onClick={() => signIn("google")}
-            className="px-6 py-3 rounded-2xl bg-linear-to-r from-cyan-500 to-purple-600 hover:scale-105 transition font-bold shadow-[0_0_30px_rgba(6,182,212,0.4)]"
-          >
-            Entrar
-          </button>
+          {session?.user ? (
+            <div className="flex items-center gap-4">
+              {session.user.image && (
+                <img
+                  src={session.user.image}
+                  alt={session.user.name || "Avatar"}
+                  className="w-8 h-8 rounded-full"
+                />
+              )}
+
+              <span className="hidden sm:inline text-white font-medium">
+                {session.user.name ?? session.user.email}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => signOut()}
+                className="px-4 py-2 rounded-2xl bg-red-500 hover:scale-105 transition font-bold"
+              >
+                Sair
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => signIn("google")}
+              className="px-6 py-3 rounded-2xl bg-linear-to-r from-cyan-500 to-purple-600 hover:scale-105 transition font-bold shadow-[0_0_30px_rgba(6,182,212,0.4)]"
+            >
+              Entrar
+            </button>
+          )}
 
         </div>
 

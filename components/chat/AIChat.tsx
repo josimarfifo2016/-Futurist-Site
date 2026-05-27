@@ -11,12 +11,16 @@ export default function AIChat() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
+  const [lastMessage, setLastMessage] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
-  async function sendMessage() {
-    if (!input) return;
+  async function sendMessage(messageArg?: string) {
+    const messageToSend = messageArg ?? input;
+    if (!messageToSend) return;
 
-    const userMessage = input;
+    const userMessage = messageToSend;
 
+    setLastMessage(userMessage);
     setMessages((prev) => [
       ...prev,
       {
@@ -25,8 +29,10 @@ export default function AIChat() {
       },
     ]);
 
-    setInput("");
+    // clear input only when sending from the input field
+    if (!messageArg) setInput("");
     setLoading(true);
+    setError(null);
 
     try {
       const res = await fetch("/api/chat", {
@@ -41,6 +47,20 @@ export default function AIChat() {
 
       const data = await res.json();
 
+      if (!res.ok || data.error) {
+        const msg = data.error || "Erro na IA";
+        setError(msg);
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "ai",
+            text: msg,
+          },
+        ]);
+        setLoading(false);
+        return;
+      }
+
       setMessages((prev) => [
         ...prev,
         {
@@ -49,11 +69,13 @@ export default function AIChat() {
         },
       ]);
     } catch (_error) {
+      const msg = "Erro ao conectar com IA";
+      setError(msg);
       setMessages((prev) => [
         ...prev,
         {
           role: "ai",
-          text: "Erro ao conectar com IA",
+          text: msg,
         },
       ]);
     }
@@ -82,8 +104,20 @@ export default function AIChat() {
         ))}
 
         {loading && (
-          <div className="text-white/50">
-            IA digitando...
+          <div className="text-white/50">IA digitando...</div>
+        )}
+        {error && (
+          <div className="mt-4 p-3 rounded-md bg-red-600/20 text-red-300 border border-red-600">
+            <div className="flex items-center justify-between">
+              <span>{error}</span>
+              <button
+                type="button"
+                onClick={() => sendMessage(lastMessage)}
+                className="ml-4 px-3 py-1 rounded bg-red-600/80 text-white"
+              >
+                Tentar novamente
+              </button>
+            </div>
           </div>
         )}
       </div>
