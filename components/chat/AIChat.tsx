@@ -140,7 +140,7 @@ export default function AIChat() {
 
         <button
           type="button"
-          onClick={sendMessage}
+          onClick={() => sendMessage()}
           disabled={!input || loading}
           className="px-6 py-3 rounded-2xl bg-linear-to-r from-cyan-500 to-purple-600 disabled:opacity-50"
         >
